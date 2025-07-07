@@ -1091,8 +1091,6 @@ int xe_exec_queue_last_fence_test_dep(struct xe_exec_queue *q, struct xe_vm *vm)
 
 	return err;
 }
-<<<<<<< HEAD
-=======
 
 /**
  * xe_exec_queue_tlb_inval_last_fence_put() - Drop ref to last TLB invalidation fence
@@ -1218,4 +1216,3 @@ int xe_exec_queue_contexts_hwsp_rebase(struct xe_exec_queue *q, void *scratch)
 
 	return err;
 }
->>>>>>> b2d7ec41f2a3 (drm/xe: Attach last fence to TLB invalidation job queues)
