@@ -1234,14 +1234,58 @@
 /* Deprecated old name, replaced with PCI_DOE_DATA_OBJECT_DISC_RSP_3_TYPE */
 #define PCI_DOE_DATA_OBJECT_DISC_RSP_3_PROTOCOL		PCI_DOE_DATA_OBJECT_DISC_RSP_3_TYPE
 
-/* Compute Express Link (CXL r3.1, sec 8.1.5) */
-#define PCI_DVSEC_CXL_PORT				3
-#define PCI_DVSEC_CXL_PORT_CTL				0x0c
-#define PCI_DVSEC_CXL_PORT_CTL_UNMASK_SBR		0x00000001
+/*
+ * Compute Express Link (CXL r4.0, sec 8.1)
+ *
+ * Note that CXL DVSEC id 3 and 7 to be ignored when the CXL link state
+ * is "disconnected" (CXL r4.0, sec 9.12.3). Re-enumerate these
+ * registers on downstream link-up events.
+ */
 
-/* CXL 2.0 8.1.3: PCIe DVSEC for CXL Device */
-#define CXL_DVSEC_PCIE_DEVICE				0
-#define   CXL_DVSEC_CAP_OFFSET				0xA
-#define     CXL_DVSEC_CACHE_CAPABLE			BIT(0)
+/* CXL r4.0, 8.1.3: PCIe DVSEC for CXL Device */
+#define PCI_DVSEC_CXL_DEVICE				0
+#define  PCI_DVSEC_CXL_CAP				0xA
+#define   PCI_DVSEC_CXL_CACHE_CAPABLE			_BITUL(0)
+#define   PCI_DVSEC_CXL_MEM_CAPABLE			_BITUL(2)
+#define   PCI_DVSEC_CXL_HDM_COUNT			__GENMASK(5, 4)
+#define  PCI_DVSEC_CXL_CTRL				0xC
+#define   PCI_DVSEC_CXL_MEM_ENABLE			_BITUL(2)
+#define  PCI_DVSEC_CXL_RANGE_SIZE_HIGH(i)		(0x18 + (i * 0x10))
+#define  PCI_DVSEC_CXL_RANGE_SIZE_LOW(i)		(0x1C + (i * 0x10))
+#define   PCI_DVSEC_CXL_MEM_INFO_VALID			_BITUL(0)
+#define   PCI_DVSEC_CXL_MEM_ACTIVE			_BITUL(1)
+#define   PCI_DVSEC_CXL_MEM_SIZE_LOW			__GENMASK(31, 28)
+#define  PCI_DVSEC_CXL_RANGE_BASE_HIGH(i)		(0x20 + (i * 0x10))
+#define  PCI_DVSEC_CXL_RANGE_BASE_LOW(i)		(0x24 + (i * 0x10))
+#define   PCI_DVSEC_CXL_MEM_BASE_LOW			__GENMASK(31, 28)
+
+#define CXL_DVSEC_RANGE_MAX				2
+
+/* CXL r4.0, 8.1.4: Non-CXL Function Map DVSEC */
+#define PCI_DVSEC_CXL_FUNCTION_MAP			2
+
+/* CXL r4.0, 8.1.5: Extensions DVSEC for Ports */
+#define PCI_DVSEC_CXL_PORT				3
+#define  PCI_DVSEC_CXL_PORT_CTL				0x0c
+#define   PCI_DVSEC_CXL_PORT_CTL_UNMASK_SBR		0x00000001
+
+/* CXL r4.0, 8.1.6: GPF DVSEC for CXL Port */
+#define PCI_DVSEC_CXL_PORT_GPF				4
+#define  PCI_DVSEC_CXL_PORT_GPF_PHASE_1_CONTROL		0x0C
+#define   PCI_DVSEC_CXL_PORT_GPF_PHASE_1_TMO_BASE	__GENMASK(3, 0)
+#define   PCI_DVSEC_CXL_PORT_GPF_PHASE_1_TMO_SCALE	__GENMASK(11, 8)
+#define  PCI_DVSEC_CXL_PORT_GPF_PHASE_2_CONTROL		0xE
+#define   PCI_DVSEC_CXL_PORT_GPF_PHASE_2_TMO_BASE	__GENMASK(3, 0)
+#define   PCI_DVSEC_CXL_PORT_GPF_PHASE_2_TMO_SCALE	__GENMASK(11, 8)
+
+/* CXL r4.0, 8.1.7: GPF DVSEC for CXL Device */
+#define PCI_DVSEC_CXL_DEVICE_GPF			5
+
+/* CXL r4.0, 8.1.9: Register Locator DVSEC */
+#define PCI_DVSEC_CXL_REG_LOCATOR			8
+#define  PCI_DVSEC_CXL_REG_LOCATOR_BLOCK1		0xC
+#define   PCI_DVSEC_CXL_REG_LOCATOR_BIR			__GENMASK(2, 0)
+#define   PCI_DVSEC_CXL_REG_LOCATOR_BLOCK_ID		__GENMASK(15, 8)
+#define   PCI_DVSEC_CXL_REG_LOCATOR_BLOCK_OFF_LOW	__GENMASK(31, 16)
 
 #endif /* LINUX_PCI_REGS_H */
