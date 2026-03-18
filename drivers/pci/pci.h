@@ -136,7 +136,14 @@ struct pci_cap_saved_state *pci_find_saved_cap(struct pci_dev *dev, char cap);
 struct pci_cap_saved_state *pci_find_saved_ext_cap(struct pci_dev *dev,
 						   u16 cap);
 
-#ifdef CONFIG_PCI_CXL
+/*
+ * Virtual ext cap ID for CXL DVSEC/HDM snapshot in the PCI cap save chain.
+ * Must not collide with a real PCI_EXT_CAP_ID_* (see pci_add_virtual_ext_cap_save_buffer).
+ */
+#define PCI_EXT_CAP_ID_CXL_DVSEC_VIRTUAL	0xFFFF
+static_assert(PCI_EXT_CAP_ID_MAX < PCI_EXT_CAP_ID_CXL_DVSEC_VIRTUAL);
+
+#if IS_BUILTIN(CONFIG_CXL_BUS)
 void pci_allocate_cxl_save_buffer(struct pci_dev *dev);
 void pci_save_cxl_state(struct pci_dev *dev);
 void pci_restore_cxl_state(struct pci_dev *dev);

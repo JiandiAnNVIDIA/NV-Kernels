@@ -1931,6 +1931,8 @@ void pci_restore_state(struct pci_dev *dev)
 	pci_restore_config_space(dev);
 	pci_restore_cxl_state(dev);
 
+	pci_restore_cxl_state(dev);
+
 	pci_restore_pcix_state(dev);
 	pci_restore_msi_state(dev);
 
