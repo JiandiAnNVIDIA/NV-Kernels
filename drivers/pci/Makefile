@@ -39,6 +39,11 @@ obj-$(CONFIG_PCI_NPEM)		+= npem.o
 obj-$(CONFIG_PCIE_TPH)		+= tph.o
 obj-$(CONFIG_PCI_CXL)		+= cxl.o
 
+# CXL DVSEC/HDM save-restore (needs built-in CXL core symbols)
+ifeq ($(CONFIG_CXL_BUS),y)
+obj-$(CONFIG_PCI)		+= cxl.o
+endif
+
 # Endpoint library must be initialized before its users
 obj-$(CONFIG_PCI_ENDPOINT)	+= endpoint/
 

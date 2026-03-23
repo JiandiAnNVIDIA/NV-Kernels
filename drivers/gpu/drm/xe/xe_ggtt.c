@@ -23,13 +23,13 @@
 #include "xe_device.h"
 #include "xe_gt.h"
 #include "xe_gt_printk.h"
-#include "xe_gt_tlb_invalidation.h"
 #include "xe_map.h"
 #include "xe_mmio.h"
 #include "xe_pm.h"
 #include "xe_res_cursor.h"
 #include "xe_sriov.h"
 #include "xe_tile_sriov_vf.h"
+#include "xe_tlb_inval.h"
 #include "xe_wa.h"
 #include "xe_wopcm.h"
 
@@ -441,9 +441,8 @@ static void ggtt_invalidate_gt_tlb(struct xe_gt *gt)
 	if (!gt)
 		return;
 
-	err = xe_gt_tlb_invalidation_ggtt(gt);
-	if (err)
-		drm_warn(&gt_to_xe(gt)->drm, "xe_gt_tlb_invalidation_ggtt error=%d", err);
+	err = xe_tlb_inval_ggtt(&gt->tlb_inval);
+	xe_gt_WARN(gt, err, "Failed to invalidate GGTT (%pe)", ERR_PTR(err));
 }
 
 static void xe_ggtt_invalidate(struct xe_ggtt *ggtt)
